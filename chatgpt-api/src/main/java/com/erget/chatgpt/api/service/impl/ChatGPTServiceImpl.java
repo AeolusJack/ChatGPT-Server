@@ -16,7 +16,7 @@ public class ChatGPTServiceImpl implements ChatGPTService {
     @Override
     public ResultDto<String> listModel() {
         HttpRequest request = HttpUtil.createGet("https://api.openai.com/v1/models");
-        HttpRequest httpRequest = request.header("Authorization", "Bearer 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");
+        HttpRequest httpRequest = request.header("Authorization", "Bearer "+ChatGPTModel.API_KEY);
         HttpResponse execute = httpRequest.execute();
         String body = execute.body();
         return ResultDtoFactory.toAck("请求成功",body);

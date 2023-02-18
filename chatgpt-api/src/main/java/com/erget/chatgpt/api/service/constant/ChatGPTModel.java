@@ -11,7 +11,7 @@ public final class ChatGPTModel {
     /**
      * chatgpt api-key
      */
-    public static final String API_KEY = "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";
+    public static final String API_KEY = "your openai key";
     /**
      * 文本模型
      * 补全句子 / 回答问题
