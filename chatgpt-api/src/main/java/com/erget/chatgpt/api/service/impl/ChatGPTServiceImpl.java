@@ -46,7 +46,7 @@ public class ChatGPTServiceImpl implements ChatGPTService {
                 .header("Content-Type"," application/json");
         JSONObject obj = JSONUtil.createObj();
         obj.putOnce("prompt",desc);
-        obj.putOnce("n",1);
+        obj.putOnce("n",2);
         obj.putOnce("size","1024x1024");
         HttpResponse execute = httpRequest.body(obj.toString()).execute();
         return ResultDtoFactory.toAck("请求成功",execute.body());

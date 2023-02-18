@@ -30,8 +30,6 @@
     <!-- 有了这个配置，我们的pom中引入springcloud相关依赖包时就不用写版本号了 -->
     <dependencyManagement>
         <dependencies>
-
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>

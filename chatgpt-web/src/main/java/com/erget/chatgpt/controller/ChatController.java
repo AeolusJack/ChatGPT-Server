@@ -26,6 +26,7 @@ public class ChatController {
         log.info("请求参数：{} ",  text);
         ResultDto<String> text003Chat = chatGPTService.getText003Chat(text);
         JSONObject entries = JSONUtil.parseObj(text003Chat.getData());
+        log.info(entries.toString());
         JSONArray choices = (JSONArray) entries.get("choices");
         JSONObject jsonObject = (JSONObject)choices.get(0);
         String textResult = (String)jsonObject.get("text");
