@@ -1,0 +1,38 @@
+<configuration>
+
+
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>oss.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log_file}-%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <maxFileSize>500MB</maxFileSize>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+
+    <logger name="logController">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+
+    <logger name="java.sql.Connection" level="info"/>
+    <logger name="java.sql.Statement" level="info"/>
+    <logger name="java.sql.PreparedStatement" level="info"/>
+    <logger name="java.sql.ResultSet" level="info"/>
+    <logger name="org.springframework.web.servlet.DispatcherServlet" level="info"/>
+    <logger name="com.energy" level="info"/>
+
+
+</configuration>

@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+    <modelVersion>4.0.0</modelVersion>
     <!-- 管理springboot相关的依赖包版本 -->
     <!-- 有了这个配置，我们的pom中引入springboot相关依赖包时就不用写版本号了 -->
     <parent>
@@ -11,13 +11,16 @@
     </parent>
 
     <packaging>pom</packaging>
-    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.erget.chatgpt</groupId>
     <artifactId>chatgpt-server</artifactId>
+    <version>1.0.0</version>
 
     <modules>
         <module>chatgpt-api</module>
         <module>user-center</module>
         <module>chatgpt-web</module>
+        <module>common</module>
     </modules>
 
 
@@ -27,6 +30,40 @@
     <!-- 有了这个配置，我们的pom中引入springcloud相关依赖包时就不用写版本号了 -->
     <dependencyManagement>
         <dependencies>
+
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>2.6.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus</artifactId>
+                <version>3.5.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>3.5.2</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>5.8.5</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>3.8.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.24</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
