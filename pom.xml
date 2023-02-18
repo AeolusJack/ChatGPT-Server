@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- 管理springboot相关的依赖包版本 -->
+    <!-- 有了这个配置，我们的pom中引入springboot相关依赖包时就不用写版本号了 -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.12.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>chatgpt-server</artifactId>
+
+    <modules>
+        <module>chatgpt-api</module>
+        <module>user-center</module>
+        <module>chatgpt-web</module>
+    </modules>
+
+
+
+
+    <!-- 管理SpringCloud相关的依赖包版本 -->
+    <!-- 有了这个配置，我们的pom中引入springcloud相关依赖包时就不用写版本号了 -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Greenwich.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+</project>
