@@ -5,6 +5,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.erget.chatgpt.api.service.ChatGPTService;
 import com.erget.chatgpt.dto.ResultDto;
+import com.erget.chatgpt.dto.ResultDtoFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ public class ChatController {
 
 
     @GetMapping("/getChatText")
-    public String getChatText(String text) throws Exception {
+    public ResultDto<String> getChatText(String text) throws Exception {
         log.info("请求参数：{} ",  text);
         ResultDto<String> text003Chat = chatGPTService.getText003Chat(text);
         JSONObject entries = JSONUtil.parseObj(text003Chat.getData());
@@ -31,11 +32,12 @@ public class ChatController {
         JSONObject jsonObject = (JSONObject)choices.get(0);
         String textResult = (String)jsonObject.get("text");
         log.info(textResult);
-        return textResult;
+
+        return ResultDtoFactory.toAckData(textResult);
     }
 
     @GetMapping("/creatImage")
-    public String creatImage(String desc) throws Exception {
+    public ResultDto<String> creatImage(String desc) throws Exception {
         log.info("请求参数：{} ",  desc);
         ResultDto<String> image = chatGPTService.createImage(desc);
         JSONObject entries = JSONUtil.parseObj(image.getData());
@@ -44,7 +46,7 @@ public class ChatController {
        // String textResult = (String)jsonObject.get("url");
         String toString = data.toString();
         log.info(toString);
-        return toString;
+        return ResultDtoFactory.toAckData(toString);
     }
 
 
