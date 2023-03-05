@@ -23,4 +23,8 @@ public interface ChatGPTService {
      * @return
      */
      ResultDto<String> createImage(String desc);
+
+    ResultDto<String> chat3paint5(String text);
+
+    ResultDto<String> chat3paint50301(String text);
 }

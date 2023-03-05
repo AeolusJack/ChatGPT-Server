@@ -1,17 +1,39 @@
 package com.erget.chatgpt.api.service.constant;
+
+import cn.hutool.core.io.FileUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+
 /**
  * ChatGPT的模型
  */
-public final class ChatGPTModel {
+@Slf4j
+@Component
+public  class ChatGPTModel {
 
-    private ChatGPTModel() {
-
+    @Value("${chatGpt.api.key.url}")
+    private String keyUrl;
+    public  String getApiKey() {
+        try {
+            List<String> strings = FileUtil.readLines(keyUrl, "utf-8");
+             API_KEY = strings.get(0).trim();
+        } catch (Exception e) {
+            log.error("获取API key 错误：",e);
+            throw new RuntimeException(e);
+        }
+        return API_KEY;
     }
 
     /**
      * chatgpt api-key
      */
-    public static final String API_KEY = "your openai key";
+    private  String API_KEY = "";
+
+
     /**
      * 文本模型
      * 补全句子 / 回答问题
@@ -203,4 +225,38 @@ public final class ChatGPTModel {
      *
      */
     public static final String EMBEDDING_MODEL_URL = "https://api.openai.com/v1/embeddings";
+
+
+    /**
+     * ID of the model to use. Currently, only gpt-3.5-turbo and gpt-3.5-turbo-0301 are supported.
+     * {
+     *   "model": "gpt-3.5-turbo",
+     *   "messages": [{"role": "user", "content": "Hello!"}]
+     * }
+     *
+     *
+     * {
+     *   "id": "chatcmpl-123",
+     *   "object": "chat.completion",
+     *   "created": 1677652288,
+     *   "choices": [{
+     *     "index": 0,
+     *     "message": {
+     *       "role": "assistant",
+     *       "content": "\n\nHello there, how may I assist you today?",
+     *     },
+     *     "finish_reason": "stop"
+     *   }],
+     *   "usage": {
+     *     "prompt_tokens": 9,
+     *     "completion_tokens": 12,
+     *     "total_tokens": 21
+     *   }
+     * }
+     */
+    public static final String CHAT_3_5_URL = "https://api.openai.com/v1/chat/completions";
+
+    public static final String CHAT_3_5_TURBO="gpt-3.5-turbo";
+
+    public static final String CHAT_3_5_TURBO_0301="gpt-3.5-turbo-0301";
 }

@@ -1,2 +1,6 @@
 server:
-  port: 80
+  port: 8090
+chatGpt:
+  api:
+    key:
+      url: /usr/local/java/chatgpt/config/key.txt
