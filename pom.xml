@@ -21,6 +21,7 @@
         <module>user-center</module>
         <module>chatgpt-web</module>
         <module>common</module>
+        <module>chatgpt-storage</module>
     </modules>
 
 
@@ -36,16 +37,16 @@
                 <version>2.6.4</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus</artifactId>
-                <version>3.5.2</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>3.5.2</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.baomidou</groupId>-->
+<!--                <artifactId>mybatis-plus</artifactId>-->
+<!--                <version>3.5.2</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>com.baomidou</groupId>-->
+<!--                <artifactId>mybatis-plus-boot-starter</artifactId>-->
+<!--                <version>3.5.2</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>

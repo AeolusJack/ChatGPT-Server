@@ -1,0 +1,78 @@
+package com.erget.chatgpt.aspect;
+
+
+import cn.hutool.core.date.DateUtil;
+import com.erget.chatgpt.dto.ResultDto;
+import com.erget.chatgpt.entity.ChatData;
+import com.erget.chatgpt.service.ChatDataStorageService;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.*;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+
+/**
+ * 使用afterReturn拦截切点，在被切方法发生异常后不会再做
+ * 处理，但是需要注意，这里获取到的参数值是在被切的方法中经过处理后的参数值
+ */
+@Slf4j
+@Aspect
+@Component
+public class ChatServiceAspect extends AbstractAspectJ {
+
+    @Resource
+    private ChatDataStorageService chatDataStorageService;
+
+    @Pointcut(value = "@annotation(com.erget.chatgpt.aspect.annotation.ChatStorageAspect)")
+    public void serviceMethodPointcut() {
+        //切点
+    }
+
+
+    @Before("serviceMethodPointcut()")
+    public void doBefore(JoinPoint joinPoint) throws Throwable {
+        // 接收到请求，记录请求内容
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        // 记录下请求内容
+        log.info("URL : " + request.getRequestURL().toString());
+        log.info("HTTP_METHOD : " + request.getMethod());
+        log.info("IP : " + request.getRemoteAddr());
+        log.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+        log.info("ARGS : " + Arrays.toString(joinPoint.getArgs()));
+        Signature signature = joinPoint.getSignature();
+        String name = signature.getName();
+        ChatData chatData = new ChatData();
+        chatData.setContent(joinPoint.getArgs()[0].toString());
+        chatData.setContentType("Q_"+name);
+        chatData.setToken("");
+        chatData.setCreatedTime(DateUtil.date());
+        chatDataStorageService.save(chatData);
+    }
+    /**
+     * 新增用户后在redis中存储key标记
+     * @param ret
+     */
+    @AfterReturning(returning = "ret", pointcut = "serviceMethodPointcut()")
+    public void doActionAfter(Object ret){
+        //返回内容
+        log.info("RESPONSE : " + ret);
+        ResultDto resultDto = (ResultDto) ret;
+        ChatData chatData = new ChatData();
+        chatData.setContent(resultDto.getData().toString());
+        chatData.setContentType("A_");
+        chatData.setToken("");
+        chatData.setCreatedTime(DateUtil.date());
+        chatDataStorageService.save(chatData);
+    }
+
+
+
+
+}

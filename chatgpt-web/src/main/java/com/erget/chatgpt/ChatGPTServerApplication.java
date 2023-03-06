@@ -2,6 +2,7 @@ package com.erget.chatgpt;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -15,7 +16,8 @@ import java.net.UnknownHostException;
 /**
  * ChatGPT服务平台启动类
  */
-@SpringBootApplication(scanBasePackages = {"com.erget.chatgpt.**"},exclude={DataSourceAutoConfiguration.class})
+
+@SpringBootApplication(scanBasePackages = {"com.erget.chatgpt.**"})
 @EnableScheduling
 @Slf4j
 public class ChatGPTServerApplication {
