@@ -38,7 +38,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 "/user/login","/user/signIn"
         };
         //创建用户拦截器对象并指定其拦截的路径和排除的路径
-        registry.addInterceptor(userInterceptor).addPathPatterns(addPathPatterns).excludePathPatterns(excludePathPatterns);
+        registry.addInterceptor(userInterceptor).addPathPatterns(addPathPatterns).excludePathPatterns(excludePathPatterns).order(10);
     }
 
 

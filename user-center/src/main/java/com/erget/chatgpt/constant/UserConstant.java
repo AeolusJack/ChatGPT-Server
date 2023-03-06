@@ -1,4 +1,4 @@
-package com.erget.chatgpt.user.constant;
+package com.erget.chatgpt.constant;
 
 public class UserConstant {
 

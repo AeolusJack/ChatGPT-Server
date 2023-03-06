@@ -1,0 +1,11 @@
+package com.erget.chatgpt.util;
+
+
+import lombok.Data;
+import org.springframework.stereotype.Component;
+
+@Data
+@Component
+public class UserContextUtil {
+    private String userName;
+}

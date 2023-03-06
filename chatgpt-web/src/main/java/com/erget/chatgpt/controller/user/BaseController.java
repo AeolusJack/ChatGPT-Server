@@ -1,4 +1,4 @@
-package com.erget.chatgpt.user.controller;
+package com.erget.chatgpt.controller.user;
 
 import com.erget.chatgpt.dto.ResultDto;
 import com.erget.chatgpt.dto.ResultDtoFactory;

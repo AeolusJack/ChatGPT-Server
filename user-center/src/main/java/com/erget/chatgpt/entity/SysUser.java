@@ -1,10 +1,9 @@
-package com.erget.chatgpt.user.entity;
+package com.erget.chatgpt.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
 
 
 import java.io.Serializable;
@@ -16,55 +15,39 @@ import java.util.Date;
  * @date : 2023-3-6
  */
 
-@ApiModel(value = "用户表",description = "")
 @TableName("sys_suer")
 public class SysUser implements Serializable,Cloneable{
     /** 租户号 */
-    @ApiModelProperty(name = "租户号",notes = "")
     private String tenantId ;
     /** 乐观锁 */
-    @ApiModelProperty(name = "乐观锁",notes = "")
     private Integer revision ;
     /** 创建人 */
-    @ApiModelProperty(name = "创建人",notes = "")
     private String createdBy ;
     /** 创建时间 */
-    @ApiModelProperty(name = "创建时间",notes = "")
     private Date createdTime ;
     /** 更新人 */
-    @ApiModelProperty(name = "更新人",notes = "")
     private String updatedBy ;
     /** 更新时间 */
-    @ApiModelProperty(name = "更新时间",notes = "")
     private Date updatedTime ;
     /** 主键 */
 
     @TableId(type = IdType.AUTO)
-    @ApiModelProperty(name = "主键",notes = "")
     private Integer id ;
     /** 用户名 */
-    @ApiModelProperty(name = "用户名",notes = "")
     private String userName ;
     /** 密码 */
-    @ApiModelProperty(name = "密码",notes = "")
     private String password ;
     /** 电话 */
-    @ApiModelProperty(name = "电话",notes = "")
     private String phone ;
     /** 邮箱 */
-    @ApiModelProperty(name = "邮箱",notes = "")
     private String email ;
     /** 地址 */
-    @ApiModelProperty(name = "地址",notes = "")
     private String address ;
     /** 性别 */
-    @ApiModelProperty(name = "性别",notes = "")
     private String sex ;
     /** 头像 */
-    @ApiModelProperty(name = "头像",notes = "")
     private String icon ;
     /** 机构id */
-    @ApiModelProperty(name = "机构id",notes = "")
     private Integer groupId ;
 
     /** 租户号 */

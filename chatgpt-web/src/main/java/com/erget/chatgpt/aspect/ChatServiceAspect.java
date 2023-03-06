@@ -5,10 +5,12 @@ import cn.hutool.core.date.DateUtil;
 import com.erget.chatgpt.dto.ResultDto;
 import com.erget.chatgpt.entity.ChatData;
 import com.erget.chatgpt.service.ChatDataStorageService;
+import com.erget.chatgpt.util.UserContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -28,6 +30,9 @@ public class ChatServiceAspect extends AbstractAspectJ {
 
     @Resource
     private ChatDataStorageService chatDataStorageService;
+
+    @Autowired
+    UserContextUtil userContextUtil;
 
     @Pointcut(value = "@annotation(com.erget.chatgpt.aspect.annotation.ChatStorageAspect)")
     public void serviceMethodPointcut() {
@@ -53,10 +58,13 @@ public class ChatServiceAspect extends AbstractAspectJ {
         chatData.setContentType("Q_"+name);
         chatData.setToken("");
         chatData.setCreatedTime(DateUtil.date());
+        chatData.setCreatedBy(userContextUtil.getUserName());
+        chatData.setUpdatedTime(DateUtil.date());
+        chatData.setUpdatedBy(userContextUtil.getUserName());
+        chatData.setRevision(0);
         chatDataStorageService.save(chatData);
     }
     /**
-     * 新增用户后在redis中存储key标记
      * @param ret
      */
     @AfterReturning(returning = "ret", pointcut = "serviceMethodPointcut()")
@@ -64,12 +72,18 @@ public class ChatServiceAspect extends AbstractAspectJ {
         //返回内容
         log.info("RESPONSE : " + ret);
         log.info("ARGS : " + Arrays.toString(joinPoint.getArgs()));
+        Signature signature = joinPoint.getSignature();
+        String name = signature.getName();
         ResultDto resultDto = (ResultDto) ret;
         ChatData chatData = new ChatData();
         chatData.setContent(resultDto.getData().toString());
-        chatData.setContentType("A_");
+        chatData.setContentType("A_"+name);
         chatData.setToken("");
         chatData.setCreatedTime(DateUtil.date());
+        chatData.setCreatedBy(userContextUtil.getUserName());
+        chatData.setUpdatedTime(DateUtil.date());
+        chatData.setUpdatedBy(userContextUtil.getUserName());
+        chatData.setRevision(0);
         chatDataStorageService.save(chatData);
     }
 

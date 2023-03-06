@@ -1,4 +1,4 @@
-package com.erget.chatgpt.user.util;
+package com.erget.chatgpt.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -116,13 +116,10 @@ public class JwtUtil implements Serializable, InitializingBean {
         JwtUtil jwtUtil = new JwtUtil();
         jwtUtil.afterPropertiesSet();
         Map<String, Object> claims = new HashMap<>(8);
-//        claims.put(JwtConstant.CLAIMS_NAME_TENANT_ID, 12L);
-//        claims.put(JwtConstant.CLAIMS_NAME_USER_ID, 22L);
-//        claims.put(JwtConstant.CLAIMS_NAME_GROUP_ID, 12L);
-//        claims.put(JwtConstant.CLAIMS_NAME_IDS_GROUP_ID, "12312");
 
-        String s = jwtUtil.generateToken("nbg@8531.com", claims, null);
+        claims.put("chat","erget");
+        String s = jwtUtil.generateToken("pjq@163.com", claims, jwtUtil.expirationTime);
         System.out.println(s);
-        System.out.println(jwtUtil.getClaimsFromToken("eyJhbGciOiJFUzI1NiJ9.eyJ1aWQiOjQxOSwic3ViIjoibmJnQDg1MzEuY29tIiwiZ2lkIjoyMDYsImlpZCI6bnVsbCwiZXhwIjoxNjI3MjI2NjQwLCJpYXQiOjE2MjY2ODY2NDAsInRpZCI6MTAyfQ.BFSqhqzalSEzjd8tJQcx7kRGDm0FNgFHbUTS-YFRdVrrig3zgIPi74UFOKO51Sukj3lJ6ip9JSzDUzsOdz7mqQ"));
+       // System.out.println(jwtUtil.getClaimsFromToken("eyJhbGciOiJFUzI1NiJ9.eyJ1aWQiOjQxOSwic3ViIjoibmJnQDg1MzEuY29tIiwiZ2lkIjoyMDYsImlpZCI6bnVsbCwiZXhwIjoxNjI3MjI2NjQwLCJpYXQiOjE2MjY2ODY2NDAsInRpZCI6MTAyfQ.BFSqhqzalSEzjd8tJQcx7kRGDm0FNgFHbUTS-YFRdVrrig3zgIPi74UFOKO51Sukj3lJ6ip9JSzDUzsOdz7mqQ"));
     }
 }

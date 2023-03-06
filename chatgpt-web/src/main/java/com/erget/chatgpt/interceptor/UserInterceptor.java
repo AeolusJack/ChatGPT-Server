@@ -1,5 +1,8 @@
 package com.erget.chatgpt.interceptor;
 
+import com.erget.chatgpt.exception.InvalidTokenException;
+import com.erget.chatgpt.util.JwtUtil;
+import com.erget.chatgpt.util.UserContextUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,8 +23,11 @@ import javax.servlet.http.HttpServletResponse;
 public class UserInterceptor  implements HandlerInterceptor {
 
 
+
     @Autowired
-    JwtValidator jwtValidator;
+    JwtUtil jwtUtil;
+    @Autowired
+    UserContextUtil userContextUtil;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -30,14 +36,15 @@ public class UserInterceptor  implements HandlerInterceptor {
         String user = request.getHeader("user");
         if (StringUtils.isBlank(token) || StringUtils.isBlank(user)){
             response.setCharacterEncoding("UTF-8"); // 避免乱码
-            throw new Exception("请求参数缺失");
+            throw new ServletException("请求参数缺失");
         }
-        Boolean tokenExpired = jwtValidator.isTokenExpired(token);
-        Boolean aBoolean = jwtValidator.validateToken(user, token);
-        if (tokenExpired && aBoolean){
+        //保存用户名
+        userContextUtil.setUserName(user);
+        Boolean tokenExpired = jwtUtil.validateToken(token,user);
+        if (tokenExpired){
 
         }else {
-            throw new ServletException("token过期或无效");
+            throw new InvalidTokenException("token过期或无效");
         }
         return true;
     }

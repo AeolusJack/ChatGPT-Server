@@ -1,10 +1,9 @@
-package com.erget.chatgpt.user.controller;
+package com.erget.chatgpt.controller.user;
 
+import com.erget.chatgpt.constant.UserConstant;
 import com.erget.chatgpt.dto.ResultDto;
-import com.erget.chatgpt.user.constant.UserConstant;
-import com.erget.chatgpt.user.util.JwtUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.erget.chatgpt.util.JwtUtil;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,6 @@ import java.io.UnsupportedEncodingException;
 
 
 
-@Api(tags = "用户JWT认证服务")
 @Slf4j
 @RestController
 @RequestMapping("/ua")
@@ -27,7 +25,6 @@ public class JwtAuthenticationController extends BaseController {
      * 无拖拽验证码 登录接口
      * @return
      */
-    @ApiOperation(value = "用户名密码登录")
     @GetMapping("/login")
     public ResultDto<Object> login(@RequestParam String username,
                                    @RequestParam String password,

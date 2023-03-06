@@ -1,11 +1,10 @@
-package com.erget.chatgpt.user.service;
+package com.erget.chatgpt.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.erget.chatgpt.dto.ResultDto;
-import com.erget.chatgpt.user.dao.SysUserDao;
-import com.erget.chatgpt.user.entity.SysUser;
-import com.erget.chatgpt.user.util.JwtUtil;
+import com.erget.chatgpt.dao.SysUserDao;
+import com.erget.chatgpt.entity.SysUser;
+import com.erget.chatgpt.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +29,10 @@ public class SysUserService extends ServiceImpl<SysUserDao, SysUser> {
      * @param phone
      * @return
      */
-    public String signIn(String username, String password, String phone) {
+    public Map signIn(String username, String password, String phone) {
 
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
-        QueryWrapper<SysUser> eq = wrapper.eq("userName", username);
+        QueryWrapper<SysUser> eq = wrapper.eq("user_name", username);
         SysUser sysUser = getOne(eq);
         if (sysUser == null){
             sysUser = new SysUser();
@@ -44,12 +43,16 @@ public class SysUserService extends ServiceImpl<SysUserDao, SysUser> {
         boolean b = saveOrUpdate(sysUser);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("chat","erget");
-        return jwtUtil.generateToken(username, hashMap, jwtUtil.getExpirationTime());
+        String token = jwtUtil.generateToken(username, hashMap, jwtUtil.getExpirationTime());
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("token",token);
+        map.put("user",username);
+        return map;
     }
 
     public boolean check(String username) {
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
-        QueryWrapper<SysUser> eq = wrapper.eq("userName", username);
+        QueryWrapper<SysUser> eq = wrapper.eq("user_name", username);
         SysUser sysUser = getOne(eq);
         if (sysUser == null){
             return false;
@@ -59,7 +62,7 @@ public class SysUserService extends ServiceImpl<SysUserDao, SysUser> {
 
     public Map login(String username, String password) throws Exception {
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
-        QueryWrapper<SysUser> eq = wrapper.eq("userName", username);
+        QueryWrapper<SysUser> eq = wrapper.eq("user_name", username);
         SysUser sysUser = getOne(eq);
         HashMap<String, Object> map = new HashMap<>();
         if (sysUser == null){
