@@ -60,9 +60,10 @@ public class ChatServiceAspect extends AbstractAspectJ {
      * @param ret
      */
     @AfterReturning(returning = "ret", pointcut = "serviceMethodPointcut()")
-    public void doActionAfter(Object ret){
+    public void doActionAfter(JoinPoint joinPoint,Object ret){
         //返回内容
         log.info("RESPONSE : " + ret);
+        log.info("ARGS : " + Arrays.toString(joinPoint.getArgs()));
         ResultDto resultDto = (ResultDto) ret;
         ChatData chatData = new ChatData();
         chatData.setContent(resultDto.getData().toString());
