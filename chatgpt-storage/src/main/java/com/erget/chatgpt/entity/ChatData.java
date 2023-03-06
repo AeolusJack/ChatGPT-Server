@@ -3,6 +3,7 @@ package com.erget.chatgpt.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.Date;
  * @author : http://www.chiner.pro
  * @date : 2023-3-6
  */
+@Data
 @TableName("chat_data")
 public class ChatData implements Serializable,Cloneable{
 

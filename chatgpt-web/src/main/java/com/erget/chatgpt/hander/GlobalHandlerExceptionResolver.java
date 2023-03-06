@@ -21,6 +21,7 @@ public class GlobalHandlerExceptionResolver {
         if (e instanceof InvalidTokenException){
             return ResultDtoFactory.toCustom("201",e.getMessage(),null);
         }
+        log.error("请求出错",e);
         return ResultDtoFactory.toNack(e.getMessage());
     }
 

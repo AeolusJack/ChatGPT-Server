@@ -24,14 +24,14 @@ public class ChatServiceImpl implements ChatService {
     @ChatStorageAspect
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultDto<String> getChatText(String text) {
+    public ResultDto<String> getChatText(String text) throws Exception {
         log.info("请求参数：{} ",  text);
         ResultDto<String> text003Chat =  null;
         try {
             text003Chat = chatGPTService.getText003Chat(text);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            return ResultDtoFactory.toAckData("暂时请求不到chatGPT服务");
+            throw new Exception("暂时请求不到chatGPT服务");
         }
         JSONObject entries = JSONUtil.parseObj(text003Chat.getData());
         log.info(entries.toString());
@@ -61,14 +61,14 @@ public class ChatServiceImpl implements ChatService {
     @ChatStorageAspect
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultDto<String> chat3paint5(String text) {
+    public ResultDto<String> chat3paint5(String text) throws Exception {
         log.info("请求参数：{} ",  text);
         ResultDto<String> text003Chat =  null;
         try {
             text003Chat = chatGPTService.chat3paint50301(text);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            return ResultDtoFactory.toAckData("暂时请求不到chatGPT服务");
+            throw new Exception("暂时请求不到chatGPT服务");
         }
         JSONObject entries = JSONUtil.parseObj(text003Chat.getData());
         log.info(entries.toString());
@@ -83,14 +83,14 @@ public class ChatServiceImpl implements ChatService {
     @ChatStorageAspect
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultDto<String> chat3paint50301(String text) {
+    public ResultDto<String> chat3paint50301(String text) throws Exception {
         log.info("请求参数：{} ",  text);
         ResultDto<String> text003Chat =  null;
         try {
             text003Chat = chatGPTService.chat3paint50301(text);
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            return ResultDtoFactory.toAckData("暂时请求不到chatGPT服务");
+            throw new Exception("暂时请求不到chatGPT服务");
         }
         JSONObject entries = JSONUtil.parseObj(text003Chat.getData());
         log.info(entries.toString());

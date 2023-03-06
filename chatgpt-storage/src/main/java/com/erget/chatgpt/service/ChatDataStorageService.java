@@ -13,4 +13,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChatDataStorageService extends ServiceImpl<ChatDataDao, ChatData> {
 
+
 }
