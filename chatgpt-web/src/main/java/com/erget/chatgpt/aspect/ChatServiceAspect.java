@@ -2,6 +2,7 @@ package com.erget.chatgpt.aspect;
 
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONUtil;
 import com.erget.chatgpt.dto.ResultDto;
 import com.erget.chatgpt.entity.ChatData;
 import com.erget.chatgpt.service.ChatDataStorageService;
@@ -17,6 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -76,7 +78,10 @@ public class ChatServiceAspect extends AbstractAspectJ {
         String name = signature.getName();
         ResultDto resultDto = (ResultDto) ret;
         ChatData chatData = new ChatData();
-        chatData.setContent(resultDto.getData().toString());
+        //包一层，返回数据有特殊字符，入库时会出问题
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add(JSONUtil.toJsonStr(resultDto.getData()));
+        chatData.setContent(JSONUtil.toJsonStr(strings));
         chatData.setContentType("A_"+name);
         chatData.setToken("");
         chatData.setCreatedTime(DateUtil.date());
