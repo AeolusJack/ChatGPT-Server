@@ -3,9 +3,12 @@ package com.erget.chatgpt.controller.doc;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.*;
+import com.deepoove.poi.data.style.Style;
+import com.deepoove.poi.util.StyleUtils;
 import com.erget.chatgpt.dto.DocQueryReq;
 import com.erget.chatgpt.entity.ChatData;
 import com.erget.chatgpt.service.ChatDataStorageService;
+import com.erget.chatgpt.util.DateUtils;
 import com.erget.chatgpt.util.UserContextUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +44,7 @@ public class DocController {
             response.reset();
             response.setContentType("application/octet-stream");
             response.setHeader("Content-disposition",
-                    "attachment;filename=user_word_" + System.currentTimeMillis() + ".docx");
+                    "attachment;filename=chat_" + DateUtils.getNowDateShort() + ".docx");
             OutputStream os = response.getOutputStream();
             document.write(os);
             os.close();
@@ -61,27 +65,53 @@ public class DocController {
 
         Map<String, Object> content = new HashMap<>();
         content.put("title", "Chat 对话");
-        content.put("author", userContextUtil.getUserName());
-        content.put("site", new HyperlinkTextRenderData("https://www.baidu", "https://www.baidu"));
+        content.put("author", StringUtils.isBlank(userContextUtil.getUserName()) ? "至尊宝":userContextUtil.getUserName());
+        content.put("dateStart",docQueryReq.getStartTime());
+        content.put("dateEnd",docQueryReq.getEndTime());
+//        content.put("poiList", Numberings.create("excel03只能打开xls格式，无法直接打开xlsx格式",
+//                "xls只有65536行、256列; xlsx可以有1048576行、16384列",
+//                "xls占用空间大, xlsx占用空间小，运算速度也会快一点"));
 
-        content.put("poiText", "Apache POI 是创建和维护操作各种符合Office Open XML（OOXML）标准和微软的OLE 2复合文档格式（OLE2）的Java API。用它可以使用Java读取和创建,修改MS Excel文件.而且,还可以使用Java读取和创建MS Word和MSPowerPoint文件。更多请参考[官方文档](https://poi.apache.org/index.html)");
+        ArrayList<TextRenderData> arrayList = new ArrayList<>();
+        list.forEach(x->{
+            if (x.getContentType().startsWith("Q_")){
+                TextRenderData textRenderData = Texts.of("提问：").create();
+                Style build = Style.builder().build();
+                build.setFontFamily("微软雅黑");
+                build.setColor("00FF00");
+                build.setFontSize(8);
+                textRenderData.setStyle(build);
+                textRenderData.setText(x.getContent());
+                arrayList.add(textRenderData);
+            }else {
+                TextRenderData textRenderData = Texts.of("回答：").create();
+                String substring = x.getContent().substring(2, x.getContent().length() - 2);
+                String replace = substring.replace("\\n\\n", "\r\n \t").replace("\\n", "\r\n \t");
+                Style build = Style.builder().build();
+                build.setFontFamily("微软雅黑");
+                build.setFontSize(8);
+                textRenderData.setStyle(build);
+                textRenderData.setText(replace);
+                arrayList.add(textRenderData);
+            }
+        });
 
-        content.put("poiText2", "生成xls和xlsx有什么区别？POI对Excel中的对象的封装对应关系？");
-        content.put("poiList", Numberings.create("excel03只能打开xls格式，无法直接打开xlsx格式",
-                "xls只有65536行、256列; xlsx可以有1048576行、16384列",
-                "xls占用空间大, xlsx占用空间小，运算速度也会快一点"));
+        Numberings.NumberingBuilder numberingBuilder = Numberings.of(NumberingFormat.DECIMAL_PARENTHESES);
+        arrayList.forEach(x->{
+            numberingBuilder.addItem(x);
+        });
 
-        RowRenderData headRow = Rows.of("ID", "Description").textColor("FFFFFF")
-                .bgColor("4472C4").center().create();
-        TableRenderData table = Tables.create(headRow);
-        list.forEach(a -> table.addRow(Rows.create(a.getId() + "", a.getContent())));
-        content.put("poiTable", table);
+        content.put("poiList",numberingBuilder.create());
+
+//        RowRenderData headRow = Rows.of("ID", "Description").textColor("FFFFFF")
+//                .bgColor("4472C4").center().create();
+//        TableRenderData table = Tables.create(headRow);
+//        list.forEach(a -> table.addRow(Rows.create(a.getId() + "", a.getContent())));
+//        content.put("poiTable", table);
 
 //        Resource resource = new ClassPathResource("pdai-guli.png");
 //        content.put("poiImage", Pictures.ofStream(new FileInputStream(resource.getFile())).create());
         File file = new ClassPathResource("template/poi-tl-template.docx").getFile();
-//       new XWPFDocument();
-//        XWPFTemplate.compile()
         return XWPFTemplate.compile(file).render(content);
     }
 
