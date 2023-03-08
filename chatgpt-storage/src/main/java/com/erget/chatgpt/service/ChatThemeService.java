@@ -29,7 +29,7 @@ public class ChatThemeService  extends ServiceImpl<ChatThemeDao, ChatTheme> {
         return ResultDtoFactory.toAckData(one == null ? false:true);
     }
 
-    public ResultDto create(String text, String desc) {
+    public ResultDto create(String text, String desc, String parentIdOfParent) {
         ChatTheme chatTheme = new ChatTheme();
         chatTheme.setThemeDescribe(desc);
         chatTheme.setThemeName(text);
@@ -39,6 +39,11 @@ public class ChatThemeService  extends ServiceImpl<ChatThemeDao, ChatTheme> {
         chatTheme.setUpdatedTime(DateUtil.date());
         chatTheme.setRevision(0);
         chatTheme.setTenantId(0);
+        if ("1".equals(parentIdOfParent)){
+            chatTheme.setParentId("1");
+        }else {
+            chatTheme.setParentId(parentIdOfParent+"-"+chatTheme.getId());
+        }
         this.save(chatTheme);
         return ResultDtoFactory.toAckData(true);
     }

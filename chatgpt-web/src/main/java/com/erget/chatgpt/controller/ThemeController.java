@@ -22,13 +22,13 @@ public class ThemeController {
 
     /**
      * 主题创建
-     * @param text
+     * @param text  parentIdOfParent 父主题的parentId
      * @return
      * @throws Exception
      */
     @GetMapping("/create")
-    public ResultDto<Boolean> create(String text,String desc) throws Exception {
-        return  chatThemeService.create(text,desc);
+    public ResultDto<Boolean> create(String text,String desc,@RequestParam(defaultValue = "1") String parentIdOfParent) throws Exception {
+        return  chatThemeService.create(text,desc, parentIdOfParent);
     }
 
     /**

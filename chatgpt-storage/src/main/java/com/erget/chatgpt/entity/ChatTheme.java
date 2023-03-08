@@ -35,7 +35,7 @@ public class ChatTheme {
     private String themeDescribe ;
     /** 主题名称 */
     private String themeName ;
-
-
+    /**父主题id，只有1级表示该主题无父主题 类似格式 1-11-23 **/
+    private String parentId;
 
 }
