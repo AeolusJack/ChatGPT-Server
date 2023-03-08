@@ -124,6 +124,14 @@
             <version>3.12.0</version>
         </dependency>
         <!-- world导出结束-->
+        <!-- https://mvnrepository.com/artifact/fun.mingshan/markdown4j -->
+        <!--  markdown文档导出      -->
+        <dependency>
+            <groupId>fun.mingshan</groupId>
+            <artifactId>markdown4j</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>${project.parent.artifactId}</finalName>

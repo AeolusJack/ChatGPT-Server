@@ -19,4 +19,10 @@ public class DocQueryReq {
      * 内容类型
      */
     private String contentType;
+
+    /**
+     * 下载类型
+     * world、markdown
+     */
+    private String downType;
 }

@@ -4,13 +4,20 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.*;
 import com.deepoove.poi.data.style.Style;
-import com.deepoove.poi.util.StyleUtils;
 import com.erget.chatgpt.dto.DocQueryReq;
 import com.erget.chatgpt.entity.ChatData;
 import com.erget.chatgpt.service.ChatDataStorageService;
 import com.erget.chatgpt.util.DateUtils;
 import com.erget.chatgpt.util.UserContextUtil;
+import fun.mingshan.markdown4j.Markdown;
+import fun.mingshan.markdown4j.constant.FlagConstants;
+import fun.mingshan.markdown4j.type.block.Block;
+import fun.mingshan.markdown4j.type.block.StringBlock;
+import fun.mingshan.markdown4j.type.block.TableBlock;
+import fun.mingshan.markdown4j.type.block.TitleBlock;
+import fun.mingshan.markdown4j.writer.MdWriter;
 import org.apache.commons.lang.StringUtils;
+import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,14 +25,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 
 @RestController()
@@ -37,6 +39,69 @@ public class DocController {
     @Autowired
     UserContextUtil userContextUtil;
 
+    /**
+     * 下载markdown文档
+     * @param docQueryReq
+     * @param response
+     */
+    @PostMapping("/markdown/download")
+    public void downloadMarkdown(@RequestBody DocQueryReq docQueryReq, HttpServletResponse response) throws IOException {
+        //标题Block
+        TitleBlock secondLevelTitleParamDesc = TitleBlock.builder().level(TitleBlock.Level.SECOND).content("chat对话\n").build();
+
+        //        ArrayList<Block> rows = new ArrayList<>();
+//        TableBlock.TableRow tableRowOne = new TableBlock.TableRow();
+//        TableBlock.TableRow tableRowTwo = new TableBlock.TableRow();
+//        tableRowOne.setRows(Arrays.asList("20", "促销", "仅限本月"));
+//        tableRowTwo.setRows(Arrays.asList("40", "促销", "限制本周"));
+//        rows.add(tableRowOne);
+//        rows.add(tableRowTwo);
+//        //表格标题
+//        TableBlock tableBlock = TableBlock.builder()
+//                .titles(Arrays.asList("价格", "说明", "备注"))
+//                .rows(rows)
+//                .build();
+
+        LambdaQueryWrapper<ChatData> queryWrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<ChatData> wrapper = queryWrapper.ge(ChatData::getCreatedTime, docQueryReq.getStartTime())
+                .le(ChatData::getCreatedTime, docQueryReq.getEndTime());
+        if (StringUtils.isNotBlank(docQueryReq.getContentType())){
+            wrapper = wrapper.eq(ChatData::getContentType,docQueryReq.getContentType());
+        }
+        List<ChatData> list = chatDataStorageService.list(wrapper);
+
+        Markdown.MarkdownBuilder chat = Markdown.builder()
+                .name("chat")
+                .block(secondLevelTitleParamDesc);
+        for (ChatData chatData : list) {
+            if (chatData.getContentType().startsWith("Q_")){
+                TitleBlock build = TitleBlock.builder().level(TitleBlock.Level.FOURTH).content(chatData.getContent()).build();
+                chat = chat.block(build);
+            }else {
+                String substring = chatData.getContent().substring(2, chatData.getContent().length() - 2);
+                String replace = substring.replace("\\n\\n", "\r\n \t").replace("\\n", "\r\n \t");
+                StringBlock build = StringBlock.builder().content(replace+"\r\n").build();
+                chat= chat.block(build);
+            }
+        }
+        //构建markdown文件
+        Markdown markdown = chat.build();
+
+        //提供下载
+        response.reset();
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-disposition",
+                "attachment;filename=chat_" + DateUtils.getNowDateShort() + ".md");
+        try (OutputStream fos = response.getOutputStream();
+             OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+             BufferedWriter bw = new BufferedWriter(osw)) {
+            String[] arrs = markdown.toString().split(FlagConstants.LINE_BREAK);
+            for (String arr : arrs) {
+                bw.write(arr + "\r\n");
+            }
+        }
+
+    }
     @PostMapping("/word/download")
     public void download(@RequestBody DocQueryReq docQueryReq, HttpServletResponse response){
         try {
