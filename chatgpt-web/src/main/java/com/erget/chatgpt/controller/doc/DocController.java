@@ -68,6 +68,10 @@ public class DocController {
         if (StringUtils.isNotBlank(docQueryReq.getContentType())){
             wrapper = wrapper.eq(ChatData::getContentType,docQueryReq.getContentType());
         }
+        if (StringUtils.isNotBlank(docQueryReq.getThemeIds())){
+            String[] split = StringUtils.split(",");
+            wrapper = wrapper.in(ChatData::getThemeId,split);
+        }
         List<ChatData> list = chatDataStorageService.list(wrapper);
 
         Markdown.MarkdownBuilder chat = Markdown.builder()
@@ -125,6 +129,10 @@ public class DocController {
                 .le(ChatData::getCreatedTime, docQueryReq.getEndTime());
         if (StringUtils.isNotBlank(docQueryReq.getContentType())){
             wrapper = wrapper.eq(ChatData::getContentType,docQueryReq.getContentType());
+        }
+        if (StringUtils.isNotBlank(docQueryReq.getThemeIds())){
+            String[] split = StringUtils.split(",");
+            wrapper = wrapper.in(ChatData::getThemeId,split);
         }
         List<ChatData> list = chatDataStorageService.list(wrapper);
 

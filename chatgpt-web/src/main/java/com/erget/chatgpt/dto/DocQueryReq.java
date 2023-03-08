@@ -25,4 +25,8 @@ public class DocQueryReq {
      * world、markdown
      */
     private String downType;
+    /**
+     * 主题ids
+     */
+    private String themeIds;
 }
