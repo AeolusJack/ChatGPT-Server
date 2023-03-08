@@ -40,85 +40,8 @@ public class ChatData implements Serializable,Cloneable{
     private String contentType ;
     /** 令牌号;区分同一个终端发起 */
     private String token ;
-
-    /** 租户号 */
-    public String getTenantId(){
-        return this.tenantId;
-    }
-    /** 租户号 */
-    public void setTenantId(String tenantId){
-        this.tenantId=tenantId;
-    }
-    /** 乐观锁 */
-    public Integer getRevision(){
-        return this.revision;
-    }
-    /** 乐观锁 */
-    public void setRevision(Integer revision){
-        this.revision=revision;
-    }
-    /** 创建人 */
-    public String getCreatedBy(){
-        return this.createdBy;
-    }
-    /** 创建人 */
-    public void setCreatedBy(String createdBy){
-        this.createdBy=createdBy;
-    }
-    /** 创建时间 */
-    public Date getCreatedTime(){
-        return this.createdTime;
-    }
-    /** 创建时间 */
-    public void setCreatedTime(Date createdTime){
-        this.createdTime=createdTime;
-    }
-    /** 更新人 */
-    public String getUpdatedBy(){
-        return this.updatedBy;
-    }
-    /** 更新人 */
-    public void setUpdatedBy(String updatedBy){
-        this.updatedBy=updatedBy;
-    }
-    /** 更新时间 */
-    public Date getUpdatedTime(){
-        return this.updatedTime;
-    }
-    /** 更新时间 */
-    public void setUpdatedTime(Date updatedTime){
-        this.updatedTime=updatedTime;
-    }
-    /** 归属用户id */
-    public String getUserId(){
-        return this.userId;
-    }
-    /** 归属用户id */
-    public void setUserId(String userId){
-        this.userId=userId;
-    }
-    /** 数据内容 */
-    public String getContent(){
-        return this.content;
-    }
-    /** 数据内容 */
-    public void setContent(String content){
-        this.content=content;
-    }
-
-    public String getContentType(){
-        return this.contentType;
-    }
-
-    public void setContentType(String contentType){
-        this.contentType=contentType;
-    }
-    /** 令牌号;区分同一个终端发起 */
-    public String getToken(){
-        return this.token;
-    }
-    /** 令牌号;区分同一个终端发起 */
-    public void setToken(String token){
-        this.token=token;
-    }
+    /**
+     * 主题id
+     */
+    private Integer themeId = 0;
 }

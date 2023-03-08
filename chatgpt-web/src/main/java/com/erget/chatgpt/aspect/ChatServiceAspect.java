@@ -64,6 +64,11 @@ public class ChatServiceAspect extends AbstractAspectJ {
         chatData.setUpdatedTime(DateUtil.date());
         chatData.setUpdatedBy(userContextUtil.getUserName());
         chatData.setRevision(0);
+        Object arg = joinPoint.getArgs()[1];
+        if (arg!= null ){
+            chatData.setThemeId((Integer)arg);
+        }
+
         chatDataStorageService.save(chatData);
     }
     /**
@@ -89,6 +94,10 @@ public class ChatServiceAspect extends AbstractAspectJ {
         chatData.setUpdatedTime(DateUtil.date());
         chatData.setUpdatedBy(userContextUtil.getUserName());
         chatData.setRevision(0);
+        Object arg = joinPoint.getArgs()[1];
+        if (arg!= null ){
+            chatData.setThemeId((Integer)arg);
+        }
         chatDataStorageService.save(chatData);
     }
 

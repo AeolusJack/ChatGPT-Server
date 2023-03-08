@@ -24,7 +24,7 @@ public class ChatServiceImpl implements ChatService {
     @ChatStorageAspect
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultDto<String> getChatText(String text) throws Exception {
+    public ResultDto<String> getChatText(String text, Integer themeId) throws Exception {
         log.info("请求参数：{} ",  text);
         ResultDto<String> text003Chat =  null;
         try {
@@ -46,7 +46,7 @@ public class ChatServiceImpl implements ChatService {
     @ChatStorageAspect
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultDto<String> creatImage(String desc) {
+    public ResultDto<String> creatImage(String desc, Integer themeId) {
         log.info("请求参数：{} ",  desc);
         ResultDto<String> image = chatGPTService.createImage(desc);
         JSONObject entries = JSONUtil.parseObj(image.getData());
@@ -61,7 +61,7 @@ public class ChatServiceImpl implements ChatService {
     @ChatStorageAspect
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultDto<String> chat3paint5(String text) throws Exception {
+    public ResultDto<String> chat3paint5(String text, Integer themeId) throws Exception {
         log.info("请求参数：{} ",  text);
         ResultDto<String> text003Chat =  null;
         try {
@@ -83,7 +83,7 @@ public class ChatServiceImpl implements ChatService {
     @ChatStorageAspect
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultDto<String> chat3paint50301(String text) throws Exception {
+    public ResultDto<String> chat3paint50301(String text, Integer themeId) throws Exception {
         log.info("请求参数：{} ",  text);
         ResultDto<String> text003Chat =  null;
         try {
